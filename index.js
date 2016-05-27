@@ -33,11 +33,11 @@ app.get("/",function(request,response){
 /**
  * routes and actions
  */
-app.post("/send",send);
-app.post("/register",register);
-app.get("/login/:user",login);
-app.get("/users/:user",pubkey);
-app.post("/messages",messages);
+app.post("/:user/message",send);
+app.post("/:user",register);
+app.get("/:user",login);
+app.get("/:user/pubkey",pubkey);
+app.get("/:user/messages",messages);
 
 
 app.listen("3000");
