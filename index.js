@@ -35,7 +35,7 @@ app.get("/",function(request,response){
  */
 app.post("/send",send);
 app.post("/register",register);
-app.get("/login",login);
+app.get("/login/:user",login);
 app.get("/users/",pubkey);
 app.get("/messages",messages);
 
