@@ -4,4 +4,4 @@
 module.exports = function (request, response) {
     response.end("Danke für deine Nachricht: " + request.body.title);
 
-}
+};
