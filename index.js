@@ -14,6 +14,7 @@ var db = new sqlite3.Database('./webwemser.db');
 db.serialize(function () {
 db.run("CREATE TABLE IF NOT EXISTS Users( user varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(user) )");
 });
+db.close();
 /**
  * Require request handlers
  */
