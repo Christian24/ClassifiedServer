@@ -7,6 +7,14 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 /**
+ * SQLITE
+ */
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('./webwemser.db');
+db.serialize(function () {
+db.run("CREATE TABLE IF NOT EXISTS Users( user varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(user) )");
+});
+/**
  * Require request handlers
  */
 var send = require("./send.js");
