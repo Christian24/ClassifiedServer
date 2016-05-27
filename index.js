@@ -36,8 +36,8 @@ app.get("/",function(request,response){
 app.post("/send",send);
 app.post("/register",register);
 app.get("/login/:user",login);
-app.get("/users/",pubkey);
-app.get("/messages",messages);
+app.get("/users/:user",pubkey);
+app.post("/messages",messages);
 
 
 app.listen("3000");
