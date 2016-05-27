@@ -13,6 +13,7 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./webwemser.db');
 db.serialize(function () {
 db.run("CREATE TABLE IF NOT EXISTS Users( user varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(user) )");
+db.run("CREATE TABLE IF NOT EXISTS Messages( recipient varchar(255), timestamp integer, sig_service varchar(255),  sender varchar(255), cipher text, iv integer, key_recipient_enc text, sig_recipient text, primary key(recipient, timestamp) )");
 });
 db.close();
 /**
