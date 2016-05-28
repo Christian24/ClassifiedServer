@@ -45,4 +45,4 @@ module.exports = function (request, response) {
         response.status(400).end("Provide missing information.")
     }
 
-};
+}; 
