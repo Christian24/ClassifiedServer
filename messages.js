@@ -19,7 +19,7 @@ module.exports = function (request, response) {
         var date = new Date();
         if( (sig_utime == sig_utime_check) &&  !(new Date().now()/1000 < timestamp-(5*60)))
         {
-            var sql_get = "SELECT recipient,cipher,iv,key_recipient_enc,sig_recipient from Messages WHERE recipient = ? sort by timestamp asc limit 1";
+            var sql_get = "SELECT sender,cipher,iv,key_recipient_enc,sig_recipient from Messages WHERE recipient = ? sort by timestamp asc limit 1";
             var sql_delete = "DELETE * from Messages where id = ?";
             var statement = db.prepare(sql_get);
             statement.get([user],function (error, row) {
