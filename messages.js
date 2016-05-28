@@ -28,8 +28,8 @@ module.exports = function (request, response) {
                     response.status(500).end("Sorry");
                 }else {
                     if(row) {
-                        var msg = row.id;
-                        db.run(sql_delete,[msg]);
+                        var msg_id = row.id;
+                        db.run(sql_delete,[msg_id]);
                         response.status(200).send(JSON.stringify(row)).end();
                     } else {
                         response.status(404).end("Sorry");
