@@ -1,14 +1,13 @@
 /**
  * Created by Julian on 20.05.2016.
  */
+var getPubkey = require("./getPubkey");
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./webwemser.db');
 module.exports = function (request, response) {
     var user = request.params.user;
     if(user) {
-        var sql = "SELECT pubkey_user from Users WHERE user = ?";
-        var statement = db.prepare(sql);
-        statement.get([user],function (error, row) {
+       getPubkey(user,function (error, row) {
             if(error) {
                 console.log(error);
                 response.status(400).end("Sorry");
