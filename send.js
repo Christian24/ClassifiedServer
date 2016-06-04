@@ -4,8 +4,11 @@
 var getPubkey = require('./getPubkey.js');
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./webwemser.db');
+var sql = "SELECT pubkey_recipient from Users WHERE user = ?";
+
+var text = $('#text').val();
 var timestamp = Date.now();
-module.exports = function (request, response) {
+
 
 	var user = requests.params.user;
 
