@@ -6,14 +6,15 @@ var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('./webwemser.db');
 
 module.exports = function (request, response) {
-var sql = "SELECT pubkey_recipient from Users WHERE user = ?";
-var statement = db.prepare(sql);
+	var sql = "SELECT pubkey_recipient from Users WHERE user = ?";
+	var statement = db.prepare(sql);
+	
+	//Create Initialisierungsveltor 128Bit
+	var iv = Crypto.randomBytes(16);
+	
+	var cipher = Crypto.createCipheriv('aes-128-cbc', new Buffer(<128 bit password>), iv);
 
-var NodeRSA = require('node-rsa');
-var key = new NodeRSA({b: 512});
-
-var text = $('#text').val();
-var timestamp = Date.now();
+	var timestamp = Date.now();
 
 	var user = requests.params.user;
 
@@ -31,5 +32,6 @@ var timestamp = Date.now();
             }
         });
 	}
-    response.end("Danke für deine Nachricht: " + request.body.title);
+    
+	response.end("Danke für deine Nachricht: " + request.body.title);
 }
