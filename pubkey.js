@@ -7,13 +7,13 @@ var client = db.client();
 module.exports = function (request, response) {
     var user = request.params.user;
     if(user) {
-       getPubkey(user,function (error, row) {
+       getPubkey(user,function (error, result) {
             if(error) {
                 console.log(error);
                 response.status(400).end("Sorry");
             }else {
                 if(row) {
-                    response.status(200).send(JSON.stringify(row)).end();
+                    response.status(200).send(JSON.stringify(result.rows[0])).end();
                 } else {
                     response.status(404).end("Sorry");
                 }

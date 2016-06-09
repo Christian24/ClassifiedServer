@@ -21,16 +21,15 @@ module.exports = function (request, response) {
         {
             var sql_get = "SELECT sender,cipher,iv,key_recipient_enc,sig_recipient from Messages WHERE recipient = ? sort by timestamp asc limit 1";
             var sql_delete = "DELETE * from Messages where id = ?";
-            var statement = db.prepare(sql_get);
-            statement.get([user],function (error, row) {
+           client.query(sql_get,[user],function (error, result) {
                 if(error) {
                     console.log(error);
                     response.status(500).end("Sorry");
                 }else {
-                    if(row) {
-                        var msg_id = row.id;
-                        db.run(sql_delete,[msg_id]);
-                        response.status(200).send(JSON.stringify(row)).end();
+                    if(result) {
+                        var msg_id = result.rows[0].id;
+                        client.query(sql_delete,[msg_id]);
+                        response.status(200).send(JSON.stringify(result.rows[0])).end();
                     } else {
                         response.status(404).end("Sorry");
                     }
