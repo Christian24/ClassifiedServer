@@ -44,4 +44,4 @@ app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
 
-app.listen("3000");
+app.listen(process.env.PORT || 3000);
