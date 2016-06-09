@@ -3,8 +3,8 @@
  */
 const crypto = require("crypto");
 const hash = crypto.createHash("sha256");
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db.client();
 
 module.exports = function (request, response) {
 

@@ -1,8 +1,8 @@
 /**
  * Created by Julian on 20.05.2016.
  */
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db.client();
 module.exports = function (request, response) {
 
         var user =request.body.user;
@@ -28,7 +28,7 @@ var privkey_user_enc = request.body.privkey_user_enc;
             });
 
 
-            db.run("INSERT INTO Users VALUES(?,?,?,?)",[user,salt_masterkey,pubkey_user,privkey_user_enc],function (error) {
+            client.query("INSERT INTO Users VALUES(?,?,?,?)",[user,salt_masterkey,pubkey_user,privkey_user_enc],function (error) {
                 if(error) {
                     console.log(error);
                     response.status(400).end("Sorry");

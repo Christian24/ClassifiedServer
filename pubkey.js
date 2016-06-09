@@ -2,8 +2,8 @@
  * Created by Julian on 20.05.2016.
  */
 var getPubkey = require("./getPubkey");
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db.client();
 module.exports = function (request, response) {
     var user = request.params.user;
     if(user) {

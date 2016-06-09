@@ -2,8 +2,8 @@
  * Created by Sergei on 27.05.2016.
  */
 var getPubkey = require('./getPubkey.js');
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db.client();
 
 module.exports = function (request, response) {
 /*
@@ -42,7 +42,7 @@ module.exports = function (request, response) {
                        //TODO Authentifizierung
                        //Einsortieren
                        var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES(?,?,?,?,?,?,?,?,0)"
-                       db.run(sql,[recipient,timestamp,sig_service,envelope.sender,envelope.cipher,envelope.iv,
+                       client.query(sql,[recipient,timestamp,sig_service,envelope.sender,envelope.cipher,envelope.iv,
                            envelope.key_recipient_enc, envelope.sig_recipient],function (error) {
                            if(error) {
                                response.status(400).end("Sorry");
