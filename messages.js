@@ -2,9 +2,9 @@
  * Created by Julian on 20.05.2016.
  */
 const crypto = require("crypto");
-const hash = crypto.createHash("sha256");
 var db = require("./db.js");
 var client = db.client();
+var sig_utimeCreater = require("./sig_utime.js");
 var base64 = require("./base64.js");
 
 module.exports = function (request, response) {
@@ -12,11 +12,21 @@ module.exports = function (request, response) {
     var user = base64.decode(request.body.user);
     var timestamp = request.body.timestamp;
     var sig_utime = request.body.sig_utime;
-
+    getPubkey(user,function(error, result) {
+        if (error) {
+            console.log(error);
+            response.status(400).end("Sorry");
+        } else {
+            if (result) {
+                //We have a pubkey
+                var pubkey = result;
+            }
+        }
+    });
     
-    if(user && timestamp && sig_utime)
+    if(user && timestamp && sig_utime && pubkey)
     {
-        var sig_utime_check = hash.update(user.toString()+timestamp.toString());
+        var sig_utime_check = sig_utimeCreater(user,timestamp,pubkey);
         var date = new Date();
         if( (sig_utime == sig_utime_check) &&  !(new Date().now()/1000 < timestamp-(5*60)))
         {
