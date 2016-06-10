@@ -2,7 +2,9 @@
  * Created by Sergei on 27.05.2016.
  */
 var getPubkey = require('./getPubkey.js');
+var sigCreater = require("./sig_service");
 var db = require("./db.js");
+var rsa = require("node-rsa");
 var client = db.client();
 var base64 = require("./base64");
 
@@ -45,17 +47,25 @@ module.exports = function (request, response) {
                    } else {
                     //Die Nachricht wurde zur richtigen Zeit gesendet.
                        //Authentifizierung
-                       //TODO Authentifizierung
-                       //Einsortieren
-                       var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)";
-                       client.query(sql,[recipient,timestamp,sig_service,envelope.sender,envelope.cipher,envelope.iv, envelope.key_recipient_enc, envelope.sig_recipient],function (error) {
-                           if(error) {
-                               response.status(400).end("Sorry");
-                           } else {
-                               response.status(200).send(JSON.stringify(result.rows[0])).end();
-                           }
-                       });
+
+                       
+                        var newHash = sigCreater(envelope,timestamp,recipient,result);
+                       if(newHash == sig_service) {
+                           //Einsortieren
+                           var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES(?,?,?,?,?,?,?,?,0)";
+                           client.query(sql, [recipient, timestamp, sig_service, envelope.sender, envelope.cipher, envelope.iv, envelope.key_recipient_enc, envelope.sig_recipient], function (error) {
+                               if (error) {
+                                   response.status(400).end("Sorry");
+                               } else {
+                                   response.status(200).send(JSON.stringify(result.rows[0])).end();
+                               }
+                           });
+                       } else {
+                           response.status(400).end("Sorry");
+                       }
+
                    }
+
 
                 } else {
                     response.status(404).end("Sorry");
