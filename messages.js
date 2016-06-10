@@ -9,9 +9,9 @@ var base64 = require("./base64.js");
 
 module.exports = function (request, response) {
 
-    var user = base64.decode(request.body.user);
-    var timestamp = request.body.timestamp;
-    var sig_utime = request.body.sig_utime;
+    var user = base64.decode(request.param("user"));
+    var timestamp = request.param("timestamp");
+    var sig_utime = request.param("sig_utime");
     getPubkey(user,function(error, result) {
         if (error) {
             console.log(error);
