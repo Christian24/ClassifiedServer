@@ -17,7 +17,7 @@ module.exports = function (request, response) {
             /**
              * Check if the user already exists. If so, send back user defined error.(JH)
              */
-            client.query("Select Count user as count_user from Users where user = ? ", [user], function(error,result){
+            client.query("Select Count user as count_user from Users where user = $1 ", [user], function(error,result){
                 if(error){
                     console.log(error);
                     response.status(500).end("Sorry");
@@ -29,11 +29,12 @@ module.exports = function (request, response) {
             });
 
 
-            client.query("INSERT INTO Users VALUES(?,?,?,?)",[user,salt_masterkey,pubkey_user,privkey_user_enc],function (error) {
+            client.query("INSERT INTO Users VALUES($1,$2,$3,$4)",[user,salt_masterkey,pubkey_user,privkey_user_enc],function (error) {
                 if(error) {
                     console.log(error);
                     response.status(400).end("Sorry");
                 } else {
+                    console.log("User "+user+" successfully created.")
                     response.status(200).end("Danke für deine Nachricht: ");
                 }
             });

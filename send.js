@@ -47,7 +47,7 @@ module.exports = function (request, response) {
                        //Authentifizierung
                        //TODO Authentifizierung
                        //Einsortieren
-                       var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES(?,?,?,?,?,?,?,?,0)";
+                       var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)";
                        client.query(sql,[recipient,timestamp,sig_service,envelope.sender,envelope.cipher,envelope.iv, envelope.key_recipient_enc, envelope.sig_recipient],function (error) {
                            if(error) {
                                response.status(400).end("Sorry");
