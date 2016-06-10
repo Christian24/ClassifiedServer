@@ -29,34 +29,29 @@ module.exports = function (request, response) {
                     if (error) {
                         console.log(error);
                         response.status(500).end("Sorry");
-                        return;
+
                     } else {
                         if (result.rowCount > 0) {
                             response.status(444).end("User already exists");
-                            return;
+
+                        }else{
+                            client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
+                                if (error) {
+                                    console.log(error);
+                                    response.status(400).end("Sorry");
+                                } else {
+                                    console.log("User " + user + " successfully created.");
+                                    response.status(200).end("Danke für deine Nachricht: ");
+                                }
+                            });
                         }
-                    }
-                });
-
-
-                client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
-                    if (error) {
-                        console.log(error);
-                        response.status(400).end("Sorry");
-                        return;
-                    } else {
-                        console.log("User " + user + " successfully created.");
-                        response.status(200).end("Danke für deine Nachricht: ");
-                        return;
                     }
                 });
             }
         })
-
     } else {
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
-        return;
     }
 
 };
