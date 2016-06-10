@@ -48,7 +48,7 @@ module.exports = function (request, response) {
                     }
                 });
             }
-            done();
+            client.end();
         })
     } else {
         console.log("Daten nicht vollständig");
