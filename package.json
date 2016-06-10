@@ -20,8 +20,9 @@
   "dependencies": {
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
+    "node-rsa": "^0.3.2",
+    "pg": "latest",
     "require.js": "^1.0.0",
-    "sqlite3": "^3.1.4",
-    "pg": "latest"
+    "sqlite3": "^3.1.4"
   }
 }
