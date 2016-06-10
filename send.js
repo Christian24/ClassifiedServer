@@ -8,17 +8,6 @@ var client = db();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
-/*
-	var sql = "SELECT pubkey_recipient from Users WHERE user = ?";
-	var statement = db.prepare(sql);
-
-	//Create Initialisierungsveltor 128Bit
-	var iv = Crypto.randomBytes(16);
-
-	var cipher = Crypto.createCipheriv('aes-128-cbc', new Buffer(<128 bit password>), iv);
-*/
-
-
     /**
      * get parameters from request
      */
