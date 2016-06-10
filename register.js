@@ -30,7 +30,7 @@ module.exports = function (request, response) {
                         console.log(error);
                         response.status(500).end("Sorry");
                     } else {
-                        if (result.rows["count_user"].rowCount > 0) {
+                        if (result.rowCount > 0) {
                             response.status(444).end("User already exists");
                         }
                     }
