@@ -14,13 +14,13 @@ module.exports = function (request, response) {
                 console.log(error);
                 response.status(400).end("Sorry");
             }else {
-                if(row) {
+                if(result) {
                     response.status(200).send(JSON.stringify(result.rows[0])).end();
                 } else {
                     response.status(404).end("Sorry");
                 }
             }
-        });
+        })
     } else {
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
