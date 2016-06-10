@@ -6,6 +6,10 @@ var client = db.client();
 module.exports = function(user,callback) {
     var sql = "SELECT pubkey_user from Users WHERE user = $1";
     var statement = client.query(sql,[user], function (error, result) {
-       callback(error,result);
+        if(error){
+            console.error(error);
+        }else {
+            callback(error, result);
+        }
     });
 };
