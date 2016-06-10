@@ -48,6 +48,7 @@ module.exports = function (request, response) {
                     }
                 });
             }
+            done();
         })
     } else {
         console.log("Daten nicht vollständig");
