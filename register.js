@@ -15,7 +15,7 @@ module.exports = function (request, response) {
             console.log(salt_masterkey);
             console.log(user);
 
-        client.connect(function(err, client, done) {
+        client.connect(function(err) {
             /**
              * Check if the user already exists. If so, send back user defined error.(JH)
              */
@@ -23,7 +23,7 @@ module.exports = function (request, response) {
                 console.log(err);
                 response.status(500).end("Sorry");
             }
-            if (client) {
+
                 client.query("Select Count('user') as count_user from Users where 'user' = $1 ", [user], function (error, result) {
                     console.log("entered query");
                     if (error) {
@@ -47,7 +47,6 @@ module.exports = function (request, response) {
                         }
                     }
                 });
-            }
             client.end();
         })
     } else {
