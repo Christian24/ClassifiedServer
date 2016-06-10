@@ -29,9 +29,11 @@ module.exports = function (request, response) {
                     if (error) {
                         console.log(error);
                         response.status(500).end("Sorry");
+                        return;
                     } else {
                         if (result.rowCount > 0) {
                             response.status(444).end("User already exists");
+                            return;
                         }
                     }
                 });
@@ -41,9 +43,11 @@ module.exports = function (request, response) {
                     if (error) {
                         console.log(error);
                         response.status(400).end("Sorry");
+                        return;
                     } else {
-                        console.log("User " + user + " successfully created.")
+                        console.log("User " + user + " successfully created.");
                         response.status(200).end("Danke für deine Nachricht: ");
+                        return;
                     }
                 });
             }
@@ -52,6 +56,7 @@ module.exports = function (request, response) {
     } else {
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
+        return;
     }
 
 };
