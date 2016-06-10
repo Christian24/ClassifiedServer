@@ -17,7 +17,8 @@ module.exports = function (request, response) {
             /**
              * Check if the user already exists. If so, send back user defined error.(JH)
              */
-            client.query("Select Count user as count_user from Users where user = $1 ", [user], function(error,result){
+            client.query("Select Count 'user' as count_user from Users where user = $1 ", [user], function(error,result){
+                console.log("entered query");
                 if(error){
                     console.log(error);
                     response.status(500).end("Sorry");
