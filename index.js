@@ -14,6 +14,8 @@ var db = require("./db.js");
 var client = db.client();
 if(!client){
     console.log("NO PG-Client");
+}else{
+    console.log("pgclient");
 }
 client.connect(function(err) {
     if(err){
