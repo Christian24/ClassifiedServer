@@ -4,7 +4,6 @@
 var getPubkey = require('./getPubkey.js');
 var sigCreater = require("./sig_service");
 var db = require("./db.js");
-var rsa = require("node-rsa");
 var client = db.client();
 var base64 = require("./base64");
 
@@ -47,7 +46,7 @@ module.exports = function (request, response) {
                    } else {
                     //Die Nachricht wurde zur richtigen Zeit gesendet.
                        //Authentifizierung
-                       
+
                         var newHash = sigCreater(envelope,timestamp,recipient,result);
                        if(newHash == sig_service) {
                            //Einsortieren
