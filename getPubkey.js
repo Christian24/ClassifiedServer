@@ -9,7 +9,9 @@ module.exports = function(user,callback) {
         if(error){
             console.error(error);
         }else {
-            callback(error, result);
+            if(result) {
+                callback(error, result);
+            }
         }
     });
 };
