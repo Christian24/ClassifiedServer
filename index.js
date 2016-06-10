@@ -12,6 +12,9 @@ app.use(bodyParser.json());
  */
 var db = require("./db.js");
 var client = db.client();
+if(!client){
+    console.log("NO PG-Client");
+}
 client.connect(function(err) {
     if(err){
         console.log(err);

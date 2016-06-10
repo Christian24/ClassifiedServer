@@ -5,7 +5,6 @@ var getPubkey = require("./getPubkey");
 var db = require("./db.js");
 var client = db.client();
 var base64 = require("./base64");
-
 module.exports = function (request, response) {
     var user = base64.decode(request.params.user);
     if(user) {

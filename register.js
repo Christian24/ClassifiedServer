@@ -24,7 +24,7 @@ module.exports = function (request, response) {
                 response.status(500).end("Sorry");
             }
 
-                client.query("Select Count('user') as count_user from Users where 'user' = $1 ", [user], function (error, result) {
+                client.query("Select 'user' as count_user from Users where 'user' = $1 ", [user], function (error, result) {
                     console.log("entered query");
                     if (error) {
                         console.log(error);
