@@ -2,7 +2,7 @@
  * Created by Julian on 20.05.2016.
  */
 var db = require("./db.js");
-var client = db.client();
+var client = db();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {

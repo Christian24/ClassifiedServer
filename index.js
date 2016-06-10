@@ -11,19 +11,14 @@ app.use(bodyParser.json());
  * POSTGRESQL
  */
 var db = require("./db.js");
-var client = db.client();
-if(!client){
-    console.log("NO PG-Client");
-}else{
-    console.log("pgclient");
-}
+var client = db();
 client.connect(function(err) {
     if(err){
         console.log(err);
     }else {
         client.query('CREATE TABLE IF NOT EXISTS Users( "user" varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key("user") )');
         client.query('CREATE TABLE IF NOT EXISTS Messages(id integer, recipient varchar(255), timestamp integer, sig_service varchar(255),  sender varchar(255), cipher text, iv integer, key_recipient_enc text, sig_recipient text, read integer, primary key(id) )');
-        client.end();
+
     }
 });
 
@@ -54,4 +49,4 @@ app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 5000);

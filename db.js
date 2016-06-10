@@ -6,8 +6,8 @@
  */
 var pg = require("pg");
 //var conString="postgres://rbmokhcvrfyiky:N8Zf-l_hee3NCA4mqjxeQGlZ9p@ec2-54-163-239-12.compute-1.amazonaws.com:5432/d253prihss1ba3";
-module.exports={
-    client:function(){
+module.exports=
+    function(){
         return new pg.Client({
             user: "rbmokhcvrfyiky",
             password: "N8Zf-l_hee3NCA4mqjxeQGlZ9p",
@@ -17,5 +17,5 @@ module.exports={
             ssl: true
         });
 
-    }
+
 };
