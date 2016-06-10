@@ -16,6 +16,4 @@ module.exports=
             host: "ec2-54-163-239-12.compute-1.amazonaws.com",
             ssl: true
         });
-
-
 };

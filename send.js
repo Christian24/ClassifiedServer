@@ -22,7 +22,7 @@ module.exports = function (request, response) {
     /**
      * get parameters from request
      */
-	var user = base64.decode(request.params.user);
+	var user = base64.decode(request.body.user);
     var timestamp = request.params.timestamp;
     var recipient = request.params.recipient;
     var sig_service = request.params.sig_service;

@@ -5,9 +5,7 @@ var db = require("./db.js");
 var client = db();
 var base64 = require("./base64.js");
 module.exports = function (request, response) {
-   // console.log(request.body);
-    var user = base64.decode(request.params.user);
-
+    var user = base64.decode(request.user);
     if(user) {
         var sql = "SELECT salt_masterkey, privkey_user_enc, pubkey_user from Users WHERE user = $1";
         var statement = client.query(sql,[user],function (error, result) {
@@ -27,6 +25,4 @@ module.exports = function (request, response) {
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
     }
-
-
 };
