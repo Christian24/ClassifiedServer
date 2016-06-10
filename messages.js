@@ -5,10 +5,11 @@ const crypto = require("crypto");
 const hash = crypto.createHash("sha256");
 var db = require("./db.js");
 var client = db.client();
+var base64 = require("./base64.js");
 
 module.exports = function (request, response) {
 
-    var user = request.body.user;
+    var user = base64.decode(request.body.user);
     var timestamp = request.body.timestamp;
     var sig_utime = request.body.sig_utime;
 

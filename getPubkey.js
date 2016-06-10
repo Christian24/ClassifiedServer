@@ -8,4 +8,4 @@ module.exports = function(user,callback) {
     var statement = client.query(sql,[user], function (error, result) {
        callback(error,result);
     });
-}
+};

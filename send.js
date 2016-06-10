@@ -4,6 +4,7 @@
 var getPubkey = require('./getPubkey.js');
 var db = require("./db.js");
 var client = db.client();
+var base64 = require("./base64");
 
 module.exports = function (request, response) {
 /*
@@ -20,7 +21,7 @@ module.exports = function (request, response) {
     /**
      * get parameters from request
      */
-	var user = requests.params.user;
+	var user = base64.decode(request.params.user);
     var timestamp = request.params.timestamp;
     var recipient = request.params.recipient;
     var sig_service = request.params.sig_service;

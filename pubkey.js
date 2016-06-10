@@ -4,8 +4,10 @@
 var getPubkey = require("./getPubkey");
 var db = require("./db.js");
 var client = db.client();
+var base64 = require("./base64");
+
 module.exports = function (request, response) {
-    var user = request.params.user;
+    var user = base64.decode(request.params.user);
     if(user) {
        getPubkey(user,function (error, result) {
             if(error) {
@@ -24,4 +26,4 @@ module.exports = function (request, response) {
         response.status(400).end("Sorry");
     }
 
-}
+};
