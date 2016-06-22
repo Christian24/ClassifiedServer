@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * POSTGRESQL
  */
 var db = require("./db.js");
-var pool = db();
+var pool = db.pool()
 pool.connect(function(err,client,done){
     if(err){
         console.info("---------------------------------------------------");

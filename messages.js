@@ -3,7 +3,7 @@
  */
 const crypto = require("crypto");
 var db = require("./db.js");
-var pool = db();
+var pool = db.pool();
 var sig_utimeCreater = require("./sig_utime.js");
 var base64 = require("./base64.js");
 

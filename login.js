@@ -2,7 +2,7 @@
  * Created by Julian on 20.05.2016.
  */
 var db = require("./db.js");
-var pool = db();
+var pool = db.pool();
 var base64 = require("./base64.js");
 module.exports = function (request, response) {
     var user = base64.decode(request.params.user);

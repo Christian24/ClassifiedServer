@@ -2,7 +2,7 @@
  * Created by Christian on 02.06.2016.
  */
 var db = require("./db.js");
-var pool = db();
+var pool = db.pool();
 module.exports = function(user,callback) {
     pool.connect(function(err,client,done) {
         if(err){

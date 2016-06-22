@@ -4,7 +4,7 @@
 var getPubkey = require('./getPubkey.js');
 var sigCreater = require("./sig_service");
 var db = require("./db.js");
-var pool = db();
+var pool = db.pool();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
