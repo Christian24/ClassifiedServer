@@ -14,7 +14,7 @@ module.exports = function (request, response) {
 
     console.log("---------------------------------------------------");
     console.log(new Date().toUTCString());
-    console.log("Daten unvollständig:");
+    "Request body:"
     console.log("User: " + request.params.user);
     console.log("salt_masterkey: " + request.body.salt_masterkey);
     console.log("pubkey_user: " + request.body.pubkey_user);
@@ -34,7 +34,7 @@ module.exports = function (request, response) {
                 console.log("---------------------------------------------------");
                 response.status(500).end("Internal Server Error");
             }
-                client.query("Select user from Users where 'user' = $1 ", [user], function (error, result) {
+                client.query("Select username from Users where username = $1 ", [user], function (error, result) {
                     if (error) {
                         console.log("---------------------------------------------------");
                         console.log(new Date().toUTCString());

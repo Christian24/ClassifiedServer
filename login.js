@@ -7,7 +7,7 @@ var base64 = require("./base64.js");
 module.exports = function (request, response) {
     var user = base64.decode(request.user);
     if(user) {
-        var sql = "SELECT salt_masterkey, privkey_user_enc, pubkey_user from Users WHERE user = $1";
+        var sql = "SELECT salt_masterkey, privkey_user_enc, pubkey_user from Users WHERE username = $1";
         var statement = client.query(sql,[user],function (error, result) {
         if(error) {
             console.log(error);

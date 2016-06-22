@@ -4,7 +4,7 @@
 var db = require("./db.js");
 var client = db();
 module.exports = function(user,callback) {
-    var sql = "SELECT pubkey_user from Users WHERE user = $1";
+    var sql = "SELECT pubkey_user from Users WHERE username = $1";
     var statement = client.query(sql,[user], function (error, result) {
         if(error){
             console.error(error);
