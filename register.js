@@ -34,7 +34,7 @@ module.exports = function (request, response) {
                 console.log("---------------------------------------------------");
                 response.status(500).end("Internal Server Error");
             }
-                client.query("Select Count('user') as count_user from Users where 'user' = $1 ", [user], function (error, result) {
+                client.query("Select user from Users where 'user' = $1 ", [user], function (error, result) {
                     if (error) {
                         console.log("---------------------------------------------------");
                         console.log(new Date().toUTCString());
@@ -43,7 +43,8 @@ module.exports = function (request, response) {
                         console.log("---------------------------------------------------");
                         response.status(500).end("Internal Server Error");
                     } else {
-                        if (result.rows[0].count_user > 0) {
+                        console.log("This is the length: " + result.rows.length);
+                        if (result.rows.length != 0) {
                             console.log("---------------------------------------------------");
                             console.log(new Date().toUTCString());
                             console.log("A user with the name '"+ user +"' already exists. (register.js)");
@@ -58,7 +59,7 @@ module.exports = function (request, response) {
                                     console.log("Error while creating new user: "+user+". (register.js)");
                                     console.log(error);
                                     console.log("---------------------------------------------------");
-                                    response.status(400).end("Sorry");
+                                    response.status(400).end("Sorry this is shit");
                                 } else {
                                     console.log("---------------------------------------------------");
                                     console.log(new Date().toUTCString());
