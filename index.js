@@ -12,16 +12,21 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * POSTGRESQL
  */
 var db = require("./db.js");
-var client = db();
-client.connect(function(err) {
-
+var pool = db();
+pool.connect(function(err,client,done){
     if(err){
-        console.log(err);
+        console.info("---------------------------------------------------");
+        console.info(new Date().toUTCString());
+        console.info("Database connection error while trying to setup database");
+        console.error(err);
+        console.info("---------------------------------------------------");
+        response.status(500).end("Internal Server Error");
     }else {
         client.query('CREATE TABLE IF NOT EXISTS Users(username varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(username) )');
         client.query('CREATE TABLE IF NOT EXISTS Messages(id integer, recipient varchar(255), timestamp integer, sig_service varchar(255),  sender varchar(255), cipher text, iv integer, key_recipient_enc text, sig_recipient text, read integer, primary key(id) )');
-    }
-});
+        done();
+    }}
+);
 
 /**
  * Require request handlers

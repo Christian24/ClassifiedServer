@@ -2,7 +2,7 @@
  * Created by Julian on 20.05.2016.
  */
 var db = require("./db.js");
-var client = db();
+var pool = db();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
@@ -22,19 +22,17 @@ module.exports = function (request, response) {
     console.log("---------------------------------------------------");
     
     if(user && salt_masterkey && pubkey_user && privkey_user_enc) {
-        client.connect(function(err) {
-            /**
-             * Check if the user already exists. If so, send back user defined error.(JH)
-             */
-            if (err) {
+        pool.connect(function(err,client,done){
+            if(err){
                 console.log("---------------------------------------------------");
                 console.log(new Date().toUTCString());
-                console.log("Database connection error while trying to register new user '"+ user+ "'.");
+                console.log("Database connection error while trying to register new user '" + user + "'.");
                 console.log(err);
                 console.log("---------------------------------------------------");
                 response.status(500).end("Internal Server Error");
-            }
+            }else{
                 client.query("Select username from Users where username = $1 ", [user], function (error, result) {
+                    done();
                     if (error) {
                         console.log("---------------------------------------------------");
                         console.log(new Date().toUTCString());
@@ -47,33 +45,46 @@ module.exports = function (request, response) {
                         if (result.rows.length != 0) {
                             console.log("---------------------------------------------------");
                             console.log(new Date().toUTCString());
-                            console.log("A user with the name '"+ user +"' already exists. (register.js)");
+                            console.log("A user with the name '" + user + "' already exists. (register.js)");
                             console.log("---------------------------------------------------");
                             response.status(444).end("User already exists");
 
-                        }else{
-                            client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
-                                if (error) {
+                        } else {
+                            pool.connect(function(err,client,done){
+                                if(err){
                                     console.log("---------------------------------------------------");
                                     console.log(new Date().toUTCString());
-                                    console.log("Error while creating new user: "+user+". (register.js)");
-                                    console.log(error);
+                                    console.log("Database connection error while trying to register new user '" + user + "'.");
+                                    console.log(err);
                                     console.log("---------------------------------------------------");
-                                    response.status(400).end("Sorry this is shit");
-                                } else {
-                                    console.log("---------------------------------------------------");
-                                    console.log(new Date().toUTCString());
-                                    console.log("User " + user + " successfully created.");
-                                    console.log("---------------------------------------------------");
-                                    response.status(200).end("User erfolgreich angelegt");
+                                    response.status(500).end("Internal Server Error");
+                                }else{
+                                    client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
+                                        done();
+                                        if (error) {
+                                            console.log("---------------------------------------------------");
+                                            console.log(new Date().toUTCString());
+                                            console.log("Error while creating new user: " + user + ". (register.js)");
+                                            console.log(error);
+                                            console.log("---------------------------------------------------");
+                                            response.status(400).end("Sorry this is shit");
+                                        } else {
+                                            console.log("---------------------------------------------------");
+                                            console.log(new Date().toUTCString());
+                                            console.log("User " + user + " successfully created.");
+                                            console.log("---------------------------------------------------");
+                                            response.status(200).end("User erfolgreich angelegt");
+                                        }
+                                    })
                                 }
-                            });
+                            })
+
                         }
                     }
-                });
+                })
+            }
         })
     } else {
-
         response.status(400).end("Daten unvollständig.");
     }
 

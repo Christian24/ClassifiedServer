@@ -3,7 +3,7 @@
  */
 const crypto = require("crypto");
 var db = require("./db.js");
-var client = db();
+var pool = db();
 var sig_utimeCreater = require("./sig_utime.js");
 var base64 = require("./base64.js");
 
@@ -34,19 +34,30 @@ module.exports = function (request, response) {
         {
             var sql_get = "SELECT sender,cipher,iv,key_recipient_enc,sig_recipient from Messages WHERE recipient = $1 sort by timestamp asc limit 1";
             var sql_delete = "DELETE * from Messages where id = $1";
-           client.query(sql_get,[user],function (error, result) {
-
-                if(error) {
-                    console.log(error);
-                    response.status(500).end("Sorry");
-                }else {
-                    if(result) {
-                        var msg_id = result.rows[0].id;
-                        client.query(sql_delete,[msg_id]);
-                        response.status(200).send(JSON.stringify(result.rows[0])).end();
-                    } else {
-                        response.status(404).end("Sorry");
-                    }
+            pool.connect(function(err,client,done){
+                if(err){
+                    console.info("---------------------------------------------------");
+                    console.info(new Date().toUTCString());
+                    console.info("Database connection error while trying to deliver messages.");
+                    console.error(err);
+                    console.info("---------------------------------------------------");
+                    response.status(500).end("Internal Server Error");
+                }else{
+                    client.query(sql_get,[user],function (error, result) {
+                        done();
+                        if(error) {
+                            console.log(error);
+                            response.status(500).end("Sorry");
+                        }else {
+                            if(result) {
+                                var msg_id = result.rows[0].id;
+                                client.query(sql_delete,[msg_id]);
+                                response.status(200).send(JSON.stringify(result.rows[0])).end();
+                            } else {
+                                response.status(404).end("Sorry");
+                            }
+                        }
+                    });
                 }
             });
         }else{
