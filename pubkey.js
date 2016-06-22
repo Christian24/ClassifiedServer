@@ -2,26 +2,27 @@
  * Created by Julian on 20.05.2016.
  */
 var getPubkey = require("./getPubkey");
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db();
+var base64 = require("./base64");
 module.exports = function (request, response) {
-    var user = request.params.user;
+    var user = base64.decode(request.body.user);
     if(user) {
-       getPubkey(user,function (error, row) {
+       getPubkey(user,function (error, result) {
             if(error) {
                 console.log(error);
                 response.status(400).end("Sorry");
             }else {
-                if(row) {
-                    response.status(200).send(JSON.stringify(row)).end();
+                if(result) {
+                    response.status(200).send(JSON.stringify(result.rows[0])).end();
                 } else {
                     response.status(404).end("Sorry");
                 }
             }
-        });
+        })
     } else {
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
     }
 
-}
+};

@@ -1,21 +1,21 @@
 /**
  * Created by Julian on 20.05.2016.
  */
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('./webwemser.db');
+var db = require("./db.js");
+var client = db();
+var base64 = require("./base64.js");
 module.exports = function (request, response) {
-   // console.log(request.body);
-    var user = request.params.user;
+    var user = base64.decode(request.user);
     if(user) {
-var sql = "SELECT salt_masterkey, privkey_user_enc, pubkey_user from Users WHERE user = ?";
-        var statement = db.prepare(sql);
-        statement.get([user],function (error, row) {
+        var sql = "SELECT salt_masterkey, privkey_user_enc, pubkey_user from Users WHERE user = $1";
+        var statement = client.query(sql,[user],function (error, result) {
         if(error) {
             console.log(error);
             response.status(400).end("Sorry");
         }else {
-            if(row) {
-response.status(200).send(JSON.stringify(row)).end();
+            if(result) {
+                console.log("User "+user+" successfully logged in.");
+                response.status(200).send(JSON.stringify(result.rows[0])).end();
             } else {
                 response.status(404).end("Sorry");
             }
@@ -25,6 +25,4 @@ response.status(200).send(JSON.stringify(row)).end();
         console.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
     }
-
-
-}
+};
