@@ -11,6 +11,16 @@ module.exports = function (request, response) {
     var salt_masterkey = request.body.salt_masterkey;
     var pubkey_user = request.body.pubkey_user;
     var privkey_user_enc = request.body.privkey_user_enc;
+
+    console.log("---------------------------------------------------");
+    console.log(new Date().toUTCString());
+    console.log("Daten unvollständig:");
+    console.log("User: " + request.params.user);
+    console.log("salt_masterkey: " + request.body.salt_masterkey);
+    console.log("pubkey_user: " + request.body.pubkey_user);
+    console.log("privkey_user_enc: " + request.body.privkey_user_enc);
+    console.log("---------------------------------------------------");
+    
     if(user && salt_masterkey && pubkey_user && privkey_user_enc) {
         client.connect(function(err) {
             /**
@@ -62,14 +72,7 @@ module.exports = function (request, response) {
                 });
         })
     } else {
-        console.log("---------------------------------------------------");
-        console.log(new Date().toUTCString());
-        console.log("Daten unvollständig:");
-        console.log("User: " + request.params.user);
-        console.log("salt_masterkey: " + request.body.salt_masterkey);
-        console.log("pubkey_user: " + request.body.pubkey_user);
-        console.log("privkey_user_enc: " + request.body.privkey_user_enc);
-        console.log("---------------------------------------------------");
+
         response.status(400).end("Daten unvollständig.");
     }
 
