@@ -20,5 +20,4 @@ var pool = new Pool(config);
 var db = exports;
 db.pool = function () {
     return pool;
-    return pool;
 };
