@@ -6,7 +6,7 @@ var pool = db();
 var base64 = require("./base64.js");
 module.exports = function (request, response) {
     var user = base64.decode(request.user);
-    if(user) {
+    if(user) { 
         var client = pool.connect(function(err, client, done) {
             if (err) {
                 return console.error('error fetching client from pool', err);
