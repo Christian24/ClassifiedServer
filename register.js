@@ -2,7 +2,7 @@
  * Created by Julian on 20.05.2016.
  */
 var db = require("./db.js");
-var client = db();
+var pool = db();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
@@ -22,7 +22,12 @@ module.exports = function (request, response) {
     console.log("---------------------------------------------------");
     
     if(user && salt_masterkey && pubkey_user && privkey_user_enc) {
-        client.connect(function(err) {
+        var client = pool.connect(function(err, client, done) {
+            if(err) {
+                return console.error('error fetching client from pool', err);
+            }
+
+
             /**
              * Check if the user already exists. If so, send back user defined error.(JH)
              */
@@ -41,6 +46,7 @@ module.exports = function (request, response) {
                         console.log("Error while executing check for existing users. (register.js)");
                         console.error(error);
                         console.log("---------------------------------------------------");
+                        client.release();
                         response.status(500).end("Internal Server Error");
                     } else {
                         console.log("This is the length: " + result.rows.length);
@@ -49,6 +55,7 @@ module.exports = function (request, response) {
                             console.log(new Date().toUTCString());
                             console.log("A user with the name '"+ user +"' already exists. (register.js)");
                             console.log("---------------------------------------------------");
+                            client.release();
                             response.status(444).end("User already exists");
 
                         }else{
@@ -59,12 +66,14 @@ module.exports = function (request, response) {
                                     console.log("Error while creating new user: "+user+". (register.js)");
                                     console.log(error);
                                     console.log("---------------------------------------------------");
+                                    client.release();
                                     response.status(400).end("Sorry this is shit");
                                 } else {
                                     console.log("---------------------------------------------------");
                                     console.log(new Date().toUTCString());
                                     console.log("User " + user + " successfully created.");
                                     console.log("---------------------------------------------------");
+                                    client.release();
                                     response.status(200).end("User erfolgreich angelegt");
                                 }
                             });
