@@ -1,6 +1,18 @@
 /**
  * Created by Julian on 20.05.2016.
  */
+
+/**
+ * Setup Winston logger to write into file.
+ * @type {any|*}
+ */
+var winston = require('winston');
+var logger = new(winston.Logger)({
+    transports: [
+        new(winston.transports.Console)(),
+        new(winston.transports.File)({filename: '/var/log/logF.log'})
+    ]
+});
 var getPubkey = require("./getPubkey");
 var db = require("./db.js");
 var client = db.pool();
@@ -10,7 +22,7 @@ module.exports = function (request, response) {
     if(user) {
        getPubkey(user,function (error, result) {
             if(error) {
-                console.log(error);
+                logger.log(error);
                 response.status(400).end("Sorry");
             }else {
                 if(result) {
@@ -21,7 +33,7 @@ module.exports = function (request, response) {
             }
         })
     } else {
-        console.log("Daten nicht vollständig");
+        logger.log("Daten nicht vollständig");
         response.status(400).end("Sorry");
     }
 

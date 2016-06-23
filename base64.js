@@ -3,6 +3,19 @@
  * Basic base64 implementation to provide easy access to base64-encoding and decoding.
  */
 
+/**
+ * Setup Winston logger to write into file.
+ * @type {any|*}
+ */
+var winston = require('winston');
+var logger = new(winston.Logger)({
+    transports: [
+        new(winston.transports.Console)(),
+        new(winston.transports.File)({filename: '/var/log/logF.log'})
+    ]
+});
+
+
 var base64 = exports;
 /**
  * Function to encode a given string

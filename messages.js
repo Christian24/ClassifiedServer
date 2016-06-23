@@ -1,6 +1,17 @@
 /**
  * Created by Julian on 20.05.2016.
  */
+/**
+ * Setup Winston logger to write into file.
+ * @type {any|*}
+ */
+var winston = require('winston');
+var logger = new(winston.Logger)({
+    transports: [
+        new(winston.transports.Console)(),
+        new(winston.transports.File)({filename: '/var/log/logF.log'})
+    ]
+});
 const crypto = require("crypto");
 var db = require("./db.js");
 var pool = db.pool();
@@ -14,7 +25,7 @@ module.exports = function (request, response) {
     var sig_utime = request.param("sig_utime");
     getPubkey(user,function(error, result) {
         if (error) {
-            console.log(error);
+            logger.log(error);
             response.status(400).end("Sorry");
         } else {
             if (result) {
@@ -36,17 +47,17 @@ module.exports = function (request, response) {
             var sql_delete = "DELETE * from Messages where id = $1";
             pool.connect(function(err,client,done){
                 if(err){
-                    console.info("---------------------------------------------------");
-                    console.info(new Date().toUTCString());
-                    console.info("Database connection error while trying to deliver messages.");
-                    console.error(err);
-                    console.info("---------------------------------------------------");
+                    logger.info("---------------------------------------------------");
+                    logger.info(new Date().toUTCString());
+                    logger.info("Database connection error while trying to deliver messages.");
+                    logger.error(err);
+                    logger.info("---------------------------------------------------");
                     response.status(500).end("Internal Server Error");
                 }else{
                     client.query(sql_get,[user],function (error, result) {
                         done();
                         if(error) {
-                            console.log(error);
+                            logger.log(error);
                             response.status(500).end("Sorry");
                         }else {
                             if(result) {

@@ -1,6 +1,17 @@
 /**
  * Created by Julian on 09.06.2016.
  */
+
+/**
+ * Setup Winston logger to write into file.
+*/
+var winston = require('winston');
+var logger = new(winston.Logger)({
+    transports: [
+        new(winston.transports.Console)(),
+        new(winston.transports.File)({filename: '/var/log/logF.log'})
+    ]
+});
 /**
  * POSTGRESQL Connector.
  */

@@ -1,13 +1,22 @@
 var express = require("express");
 var app = express();
 /**
+ * Setup Winston logger to write into file.
+ * @type {any|*}
+ */
+var winston = require('winston');
+var logger = new(winston.Logger)({
+    transports: [
+        new(winston.transports.Console)(),
+        new(winston.transports.File)({filename: '/var/log/logF.log'})
+    ]
+});
+/**
  * Body Parser
  */
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-
 /**
  * POSTGRESQL
  */
@@ -15,11 +24,11 @@ var db = require("./db.js");
 var pool = db.pool()
 pool.connect(function(err,client,done){
     if(err){
-        console.info("---------------------------------------------------");
-        console.info(new Date().toUTCString());
-        console.info("Database connection error while trying to setup database");
-        console.error(err);
-        console.info("---------------------------------------------------");
+        logger.info("---------------------------------------------------");
+        logger.info(new Date().toUTCString());
+        logger.info("Database connection error while trying to setup database");
+        logger.error(err);
+        logger.info("---------------------------------------------------");
         response.status(500).end("Internal Server Error");
     }else {
         client.query('CREATE TABLE IF NOT EXISTS Users(username varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(username) )');
@@ -52,5 +61,5 @@ app.get("/:user",login);
 app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
-console.log("Server startet on: " + new Date().toUTCString());
-app.listen(process.env.PORT || 5000);
+logger.log("Server startet on: " + new Date().toUTCString());
+app.listen(63791);
