@@ -2,9 +2,7 @@
  * Created by Julian on 20.05.2016.
  */
 var db = require("./db.js");
-
-var pool = db();
-
+var pool = db.pool();
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
@@ -24,17 +22,8 @@ module.exports = function (request, response) {
     console.log("---------------------------------------------------");
     
     if(user && salt_masterkey && pubkey_user && privkey_user_enc) {
-        var client = pool.connect(function(err, client, done) {
-            if(err) {
-                return console.error('error fetching client from pool', err);
-            }
-
-
-            /**
-             * Check if the user already exists. If so, send back user defined error.(JH)
-             */
-            if (err) {
-
+        pool.connect(function(err,client,done){
+            if(err){
                 console.log("---------------------------------------------------");
                 console.log(new Date().toUTCString());
                 console.log("Database connection error while trying to register new user '" + user + "'.");
@@ -50,7 +39,6 @@ module.exports = function (request, response) {
                         console.log("Error while executing check for existing users. (register.js)");
                         console.error(error);
                         console.log("---------------------------------------------------");
-                        client.release();
                         response.status(500).end("Internal Server Error");
                     } else {
                         console.log("This is the length: " + result.rows.length);
@@ -59,29 +47,35 @@ module.exports = function (request, response) {
                             console.log(new Date().toUTCString());
                             console.log("A user with the name '" + user + "' already exists. (register.js)");
                             console.log("---------------------------------------------------");
-                            client.release();
                             response.status(444).end("User already exists");
 
-
-                        }else{
-                            client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
-                                if (error) {
-                                    console.log("---------------------------------------------------");
-                                    console.log(new Date().toUTCString());
-                                    console.log("Error while creating new user: "+user+". (register.js)");
-                                    console.log(error);
-                                    console.log("---------------------------------------------------");
-                                    client.release();
-                                    response.status(400).end("Sorry this is shit");
-                                } else {
-
+                        } else {
+                            pool.connect(function(err,client,done){
+                                if(err){
                                     console.log("---------------------------------------------------");
                                     console.log(new Date().toUTCString());
                                     console.log("Database connection error while trying to register new user '" + user + "'.");
                                     console.log(err);
                                     console.log("---------------------------------------------------");
-                                    client.release();
-                                    response.status(200).end("User erfolgreich angelegt");
+                                    response.status(500).end("Internal Server Error");
+                                }else{
+                                    client.query("INSERT INTO Users VALUES($1,$2,$3,$4)", [user, salt_masterkey, pubkey_user, privkey_user_enc], function (error) {
+                                        done();
+                                        if (error) {
+                                            console.log("---------------------------------------------------");
+                                            console.log(new Date().toUTCString());
+                                            console.log("Error while creating new user: " + user + ". (register.js)");
+                                            console.log(error);
+                                            console.log("---------------------------------------------------");
+                                            response.status(400).end("Sorry this is shit");
+                                        } else {
+                                            console.log("---------------------------------------------------");
+                                            console.log(new Date().toUTCString());
+                                            console.log("User " + user + " successfully created.");
+                                            console.log("---------------------------------------------------");
+                                            response.status(200).end("User erfolgreich angelegt");
+                                        }
+                                    })
                                 }
                             })
 

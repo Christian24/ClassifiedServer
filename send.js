@@ -4,11 +4,7 @@
 var getPubkey = require('./getPubkey.js');
 var sigCreater = require("./sig_service");
 var db = require("./db.js");
-<<<<<<< HEAD
 var pool = db.pool();
-=======
-var pool = db();
->>>>>>> pooling
 var base64 = require("./base64");
 
 module.exports = function (request, response) {
@@ -41,7 +37,6 @@ module.exports = function (request, response) {
                        //Authentifizierung
                        var newHash = sigCreater(envelope,timestamp,recipient,result);
                        if(newHash == sig_service) {
-<<<<<<< HEAD
                            pool.connect(function(err,client,done){
                                if(err){
                                    console.info("---------------------------------------------------");
@@ -60,24 +55,7 @@ module.exports = function (request, response) {
                                            response.status(200).send(JSON.stringify(result.rows[0])).end();
                                        }
                                    });
-=======
-                           //Einsortieren
-                           var client = pool.connect(function(err, client, done) {
-                               if (err) {
-                                   return console.error('error fetching client from pool', err);
->>>>>>> pooling
                                }
-                               var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient, read) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)";
-
-                               client.query(sql, [recipient, timestamp, sig_service, envelope.sender, envelope.cipher, envelope.iv, envelope.key_recipient_enc, envelope.sig_recipient], function (error) {
-                                   if (error) {
-                                       client.release();
-                                       response.status(400).end("Sorry");
-                                   } else {
-                                       client.release();
-                                       response.status(200).send(JSON.stringify(result.rows[0])).end();
-                                   }
-                               });
                            });
                        } else {
                            response.status(400).end("Sorry");
