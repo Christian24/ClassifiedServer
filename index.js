@@ -1,17 +1,13 @@
 var express = require("express");
 var app = express();
+
+
 /**
  * Setup Winston logger to write into file.
- * @type {any|*}
  */
-var winston = require('winston');
-var logger = new(winston.Logger)({
-    transports: [
-        new(winston.transports.Console)(),
-        new(winston.transports.File)({filename: '/var/log/logF.log'})
-    ]
-});
-/**
+var logger= require("./logger.js");
+logger.info("TEST");
+/*
  * Body Parser
  */
 var bodyParser = require("body-parser");
@@ -21,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * POSTGRESQL
  */
 var db = require("./db.js");
-var pool = db.pool()
+var pool = db.pool();
 pool.connect(function(err,client,done){
     if(err){
         logger.info("---------------------------------------------------");

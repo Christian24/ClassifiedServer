@@ -6,6 +6,7 @@ var sigCreater = require("./sig_service");
 var db = require("./db.js");
 var pool = db.pool();
 var base64 = require("./base64");
+var logger= require("./logger.js");
 
 module.exports = function (request, response) {
     /**

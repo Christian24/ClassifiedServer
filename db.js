@@ -5,13 +5,8 @@
 /**
  * Setup Winston logger to write into file.
 */
-var winston = require('winston');
-var logger = new(winston.Logger)({
-    transports: [
-        new(winston.transports.Console)(),
-        new(winston.transports.File)({filename: '/var/log/logF.log'})
-    ]
-});
+var logger = require("./logger.js");
+
 /**
  * POSTGRESQL Connector.
  */

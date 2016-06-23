@@ -1,17 +1,7 @@
 /**
  * Created by Christian on 02.06.2016.
  */
-/**
- * Setup Winston logger to write into file.
- * @type {any|*}
- */
-var winston = require('winston');
-var logger = new(winston.Logger)({
-    transports: [
-        new(winston.transports.Console)(),
-        new(winston.transports.File)({filename: '/var/log/logF.log'})
-    ]
-});
+var logger= require("./logger.js");
 var db = require("./db.js");
 var pool = db.pool();
 module.exports = function(user,callback) {
