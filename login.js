@@ -6,6 +6,7 @@ var db = require("./db.js");
 var pool = db.pool();
 var base64 = require("./base64.js");
 module.exports = function (request, response) {
+    logger.log("Request body:");
     var user = base64.decode(request.params.user);
     logger.info("User "+ user +" trying to login.");
     if(user) {

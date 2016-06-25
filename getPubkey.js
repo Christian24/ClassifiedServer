@@ -20,8 +20,13 @@ module.exports = function(user,callback) {
                 if (error) {
                     logger.error(error);
                 } else {
-                    if (result) {
-                        callback(error, result);
+                    logger.info("Pubkeys found: " + result.rows.length + " (should be 1)");
+                    if (result && result.rows.length > 0) {
+                        logger.info("Public key for user " + user + " found: " + result.rows[0].pubkey_user);
+                        callback(error, result.rows[0].pubkey_user);
+                    }else{
+                        logger.info("No public key for user "+ user + " found.");
+                        callback(error);
                     }
                 }
             });
