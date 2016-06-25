@@ -17,7 +17,7 @@ module.exports = function (request, response) {
 
     var user = base64.decode(request.params.user);
     var timestamp = base64.decode(request.query.timestamp);
-    var sig_utime = base64.decode(request.query.sig_utime);
+    var sig_utime = request.query.sig_utime;
     getPubkey(user,function(error, result) {
         if (error) {
             logger.log(error);
