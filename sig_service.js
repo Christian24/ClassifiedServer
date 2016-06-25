@@ -6,6 +6,6 @@ var logger= require("./logger.js");
  */
 module.exports = function (envelope,timestamp,recipient,key) {
 var hash = crypto.createHash("sha256");
-    hash.update(key).update(envelope).update(timestamp).update(recipient)
+    hash.update(key).update(envelope).update(timestamp).update(recipient);
    return hash.digest("base64");
 };
