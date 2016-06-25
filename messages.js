@@ -7,6 +7,7 @@ var db = require("./db.js");
 var pool = db.pool();
 var sig_utimeCreater = require("./sig_utime.js");
 var base64 = require("./base64.js");
+var getPubkey = require('./getPubkey.js');
 
 module.exports = function (request, response) {
 
