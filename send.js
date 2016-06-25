@@ -12,11 +12,11 @@ module.exports = function (request, response) {
     /**
      * get parameters from request
      */
-	var user = base64.decode(request.body.user);
-    var timestamp = request.params.timestamp;
-    var recipient = request.params.recipient;
-    var sig_service = request.params.sig_service;
-    var envelope = request.params.envelope;
+	var user = base64.decode(request.params.user);
+    var timestamp = request.body.timestamp;
+    var recipient = request.body.recipient;
+    var sig_service = request.body.sig_service;
+    var envelope = request.body.envelope;
     // test if every parameter for envelope is set
     var envelope_full = envelope.cipher && envelope.sender && envelope.iv && envelope.key_recipient_enc && envelope.sig_recipient;
 

@@ -58,4 +58,4 @@ app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
 logger.log("Server startet on: " + new Date().toUTCString());
-app.listen(63791);
+app.listen(process.env.PORT || 63791);
