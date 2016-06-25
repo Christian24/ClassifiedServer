@@ -16,7 +16,7 @@ module.exports = function (request, response) {
                 response.status(400).end("Sorry");
             }else {
                 if(result) {
-                    response.status(200).send(JSON.stringify(result.rows[0])).end();
+                    response.status(200).send(JSON.stringify(result)).end();
                 } else {
                     response.status(404).end("Sorry");
                 }

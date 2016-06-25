@@ -6,7 +6,7 @@ var app = express();
  * Setup Winston logger to write into file.
  */
 var logger= require("./logger.js");
-logger.info("TEST");
+logger.info("Server is starting ...");
 /*
  * Body Parser
  */
@@ -28,7 +28,7 @@ pool.connect(function(err,client,done){
         response.status(500).end("Internal Server Error");
     }else {
         client.query('CREATE TABLE IF NOT EXISTS Users(username varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(username) )');
-        client.query('CREATE TABLE IF NOT EXISTS Messages(id integer, recipient varchar(255), timestamp integer, sig_service varchar(255),  sender varchar(255), cipher text, iv integer, key_recipient_enc text, sig_recipient text, read integer, primary key(id) )');
+        client.query('CREATE TABLE IF NOT EXISTS Messages(id integer, recipient varchar(255), timestamp integer, sig_service varchar(255),  sender varchar(255), cipher text, iv integer, key_recipient_enc text, sig_recipient text, primary key(id) )');
         done();
     }}
 );
@@ -57,5 +57,5 @@ app.get("/:user",login);
 app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
-logger.log("Server startet on: " + new Date().toUTCString());
-app.listen(process.env.PORT || 63791);
+logger.info("Server startet on: " + new Date().toUTCString());
+app.listen(process.env.PORT || 62831);

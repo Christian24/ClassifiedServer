@@ -25,7 +25,7 @@ module.exports = function (request, response) {
         } else {
             if (result) {
                 //We have a pubkey
-                var pubkey = result;
+                var pubkey = result.pubkey_user;
                 logger.info("Pubkey retreived from database:" + pubkey);
                 if(user && timestamp && sig_utime && pubkey)
                 {
@@ -57,7 +57,7 @@ module.exports = function (request, response) {
                                             client.query(sql_delete,[msg_id]);
                                             response.status(200).send(JSON.stringify(result.rows[0])).end();
                                         } else {
-                                            response.status(404).end("Sorry");
+                                            response.status(404).end("Nor more messages.");
                                         }
                                     }
                                 });
@@ -70,7 +70,7 @@ module.exports = function (request, response) {
                     response.status(400).end("Provide missing information.")
                 }
             }else{
-                response.status(404).end("No such user found. Please register first.");
+                response.status(400).end("No such user found. Please register first.");
             }
         }
     });

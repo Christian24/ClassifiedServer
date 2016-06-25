@@ -23,7 +23,7 @@ module.exports = function(user,callback) {
                     logger.info("Pubkeys found: " + result.rows.length + " (should be 1)");
                     if (result && result.rows.length > 0) {
                         logger.info("Public key for user " + user + " found: " + result.rows[0].pubkey_user);
-                        callback(error, result.rows[0].pubkey_user);
+                        callback(error, result.rows[0]);
                     }else{
                         logger.info("No public key for user "+ user + " found.");
                         callback(error);
