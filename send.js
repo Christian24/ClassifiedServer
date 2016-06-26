@@ -61,6 +61,7 @@ module.exports = function (request, response) {
                        if(newHash == sig_service) {
                            logger.info("Signature sig_service has not been corrupted.");
                            pool.connect(function(err,client,done){
+                               logger.info("Connecting to Database.");
                                if(err){
                                    console.info("---------------------------------------------------");
                                    console.info(new Date().toUTCString());
@@ -69,13 +70,18 @@ module.exports = function (request, response) {
                                    console.info("---------------------------------------------------");
                                    response.status(500).end("Internal Server Error");
                                }else{
+                                   logger.info("Connected to Database.");
                                    //Einsortieren
-                                   var sql = "INSERT INTO MESSAGES(recipient, timestamp, sig_service,  sender, cipher, iv, key_recipient_enc, sig_recipient) VALUES($1,$2,$3,$4,$5,$6,$7,$8)";
+                                   var sql = "INSERT INTO Messages(recipient, timestamp, sig_service, sender, cipher, iv, key_recipient_enc, sig_recipient) VALUES($1,$2,$3,$4,$5,$6,$7,$8)";
                                    client.query(sql, [recipient, timestamp, sig_service, envelope.sender, envelope.cipher, envelope.iv, envelope.key_recipient_enc, envelope.sig_recipient], function (error) {
+                                       logger.info("Persisting message...");
                                        if (error) {
-                                           response.status(400).end("Sorry");
+                                           logger.info("Error while persisting message.");
+                                           logger.error(error);
+                                           response.status(500).end("Failed to persist message.");
                                        } else {
-                                           response.status(200).send(JSON.stringify(result.rows[0])).end();
+                                           logger.info("Message persisted.")
+                                           response.status(200).end("Message successfully persisted.");
                                        }
                                    });
                                }
@@ -90,5 +96,4 @@ module.exports = function (request, response) {
             }
         });
 	}
-	response.status(400).end("Danke für deine Nachricht: " + request.body.user);
 };
