@@ -55,10 +55,15 @@ module.exports = function (request, response) {
                        logger.info("Now starting to check sig_service.");
                     //Die Nachricht wurde zur richtigen Zeit gesendet.
                        //Authentifizierung
-                       var newHash = sigCreator(envelope,timestamp,recipient,result.pubkey_user);
-                       logger.info("Signature created by server: " + newHash.toString());
+                       //var bufferedSig = Buffer.from(sig_service,"utf-8");
+                       
+                       var sig_ok = sigCreator.verifySig(envelope,timestamp,recipient,result.pubkey_user,sig_service);
+                       logger.info("Checking of sig_service revealed that the signature is " + sig_ok);
+
+                       //var newHash = sigCreator.signature(envelope,timestamp,recipient,result.pubkey_user);
+                       //logger.info("Signature created by server: " + newHash.toString());
                        logger.info("Signature created by client: " + sig_service);
-                       if(newHash == sig_service) {
+                       if(sig_ok) {
                            logger.info("Signature sig_service has not been corrupted.");
                            pool.connect(function(err,client,done){
                                logger.info("Connecting to Database.");

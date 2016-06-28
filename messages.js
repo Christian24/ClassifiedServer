@@ -31,6 +31,9 @@ module.exports = function (request, response) {
                 {
                     // Update Hash-Content with given username and timestamp
                     var sig_utime_check = sig_utimeCreater(user,timestamp,pubkey);
+                    logger.info("Comparing the sig_utime: ");
+                    logger.info("sig_utime (Server): " + sig_utime_check);
+                    logger.info("sig_utime (Client): " + sig_utime);
                     var date = new Date();
                     // If the two Hashes match the request is ok.
                     if( (sig_utime == sig_utime_check) &&  !(new Date().now()/1000 < timestamp-(5*60)))
