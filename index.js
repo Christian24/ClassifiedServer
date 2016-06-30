@@ -4,6 +4,7 @@ var app = express();
 
 /**
  * Setup Winston logger to write into file.
+ * https://github.com/winstonjs/winston
  */
 var logger= require("./logger.js");
 logger.info("---------------------------------------------------");
