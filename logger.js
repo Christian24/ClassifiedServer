@@ -1,3 +1,6 @@
+/**
+ * https://github.com/winstonjs/winston
+ **/
 var winston = require('winston');
 winston.emitErrs = true;
 
