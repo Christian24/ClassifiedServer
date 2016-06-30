@@ -1,5 +1,5 @@
 /**
- * Created by Sergei on 27.05.2016.
+ * Created by Julian on 27.05.2016.
  */
 var getPubkey = require('./getPubkey.js');
 var sigCreator = require("./sig_service");
