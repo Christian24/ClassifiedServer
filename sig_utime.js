@@ -2,7 +2,7 @@ var crypto = require("crypto");
 var logger = require("./logger.js");
 
 /**
- * Created by Christian on 10.06.2016.
+ * Created by Julian, Christian on 10.06.2016.
  * Creates a hash from envelope, timestamp, recipient and key
  */
 module.exports = function (user,timestamp,key,sig_utime) {
