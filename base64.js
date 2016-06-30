@@ -16,7 +16,10 @@ var base64 = exports;
  * @param unencoded
  * @returns {String}
  */
+
 base64.encode = function (unencoded) {
+    logger.info("---------------------------------------------------");
+    logger.info("Encoding input to base64 ...");
     return new Buffer(unencoded || '').toString('base64');
 };
 /**
@@ -25,5 +28,7 @@ base64.encode = function (unencoded) {
  * @returns {String}
  */
 base64.decode = function (encoded) {
+    logger.info("---------------------------------------------------");
+    logger.info("Decoding input from base64 to utf8 ...");
     return new Buffer(encoded || '', 'base64').toString('utf8');
 };

@@ -7,20 +7,10 @@ var base64 = require("./base64.js");
  */
 var service = module.exports;
 
-service.signature = function (string,key){//envelope,timestamp,recipient,key) {
-    //var sign = crypto.createSign("RSA-SHA256");
-    //sign.update(string);//update(envelope.user).update(envelope.cipher).update(envelope.iv).update(envelope.key_recipient_enc).update(envelope.sig_recipient).update(timestamp).update(recipient);
-    //return sign.sign(key);
-
-
-
-    var hash = crypto.createHash("sha256");
-    hash.update(string);
-    return hash.digest("base64");
-
-};
-
 service.verifySig = function(envelope, timestamp, recipient,key, sig_service){
+    logger.info("---------------------------------------------------");
+    logger.info("Verifying signature sig_service...");
+
     logger.info("--------------------------------------------")
     logger.info("decrypting sig_service with following parameters: ");
     logger.info("User: "+ envelope.sender);

@@ -23,6 +23,7 @@
     "pg": "latest",
     "pg-pool": "^1.0.3",
     "require.js": "^1.0.0",
-    "simple-node-logger": "^0.93.12"
+    "simple-node-logger": "^0.93.12",
+    "urlencode": "^1.1.0"
   }
 }

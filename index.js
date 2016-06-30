@@ -6,6 +6,7 @@ var app = express();
  * Setup Winston logger to write into file.
  */
 var logger= require("./logger.js");
+logger.info("---------------------------------------------------");
 logger.info("Server is starting ...");
 /*
  * Body Parser
@@ -24,7 +25,6 @@ pool.connect(function(err,client,done){
         logger.info(new Date().toUTCString());
         logger.info("Database connection error while trying to setup database");
         logger.error(err);
-        logger.info("---------------------------------------------------");
         response.status(500).end("Internal Server Error");
     }else {
         client.query('CREATE TABLE IF NOT EXISTS Users(username varchar(255),salt_masterkey text not null, pubkey_user text not null, privkey_user_enc text not null, primary key(username) )');
@@ -57,5 +57,6 @@ app.get("/:user",login);
 app.get("/:user/pubkey",pubkey);
 app.get("/:user/messages",messages);
 
+logger.info("---------------------------------------------------");
 logger.info("Server startet on: " + new Date().toUTCString());
-app.listen(process.env.PORT || 62831);
+app.listen(process.env.PORT || 64495);
